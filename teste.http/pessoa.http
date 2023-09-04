@@ -1,0 +1,15 @@
+@URL_BASE=http://localhost:8080
+
+### Obter todas as pessoas
+
+GET {{URL_BASE}}/pessoa
+
+### Obter pessoa pelo ID
+GET {{URL_BASE}}/pessoa/10
+
+### Cadastrar 1 pessoa
+POST {{URL_BASE}}/pessoa
+
+{
+
+}
