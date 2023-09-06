@@ -1,2 +1,2 @@
 # Projeto_DevOps
-![image](https://github.com/MateusArielPauli/Projeto_DevOps/assets/62779446/76655ffb-ddde-40d2-8f0d-b6fec2d7e6b7)
+![Captura de tela 2023-09-06 172237](https://github.com/MateusArielPauli/Projeto_DevOps/assets/62779446/18594a2e-9b1f-4790-92e2-55b9ba27f1de)
