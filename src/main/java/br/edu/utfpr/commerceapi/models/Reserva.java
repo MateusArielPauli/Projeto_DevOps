@@ -2,7 +2,7 @@ package br.edu.utfpr.commerceapi.models;
 
 import java.time.LocalDate;
 
-import br.edu.utfpr.commerceapi.dto.PersonDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -26,7 +26,7 @@ public class Reserva extends BaseEntity{
     //cliente que fez reserva
     @ManyToOne
     @JoinColumn(name = "pessoa_id")
-    private PersonDTO person;
+    private Person person;
     
     @ManyToOne
     @JoinColumn(name = "pacote_id")

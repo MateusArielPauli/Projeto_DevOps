@@ -1,6 +1,9 @@
 package br.edu.utfpr.commerceapi.controllers;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -12,7 +15,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.edu.utfpr.commerceapi.dto.PersonDTO;
 import br.edu.utfpr.commerceapi.models.Person;
 import br.edu.utfpr.commerceapi.repositories.PersonRepository;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/pessoa")
@@ -33,10 +40,18 @@ public class PersonController {
     PersonRepository personRepository;
 
     /* Obter todas as pessoas do banco */
-    @GetMapping("")
+    @GetMapping("/pages")
     public ResponseEntity<Page<Person>> getAll(
             @PageableDefault(page = 0, size = 10, sort = "nome", direction = Sort.Direction.ASC) Pageable pageable) {
         return ResponseEntity.ok().body(personRepository.findAll(pageable));
+    }
+
+    /**
+     * Obter todas as pessoas do banco.
+     */
+    @GetMapping(value = {"", "/"})
+    public List<Person> getAll() {
+        return personRepository.findAll();
     }
 
     /* Obter pessoa pelo ID */
@@ -49,9 +64,8 @@ public class PersonController {
 
     /* Atualizar 1 pessoa pelo ID */
     @PostMapping("")
-    public ResponseEntity<Object> create(@RequestBody PersonDTO personDTO) {
+    public ResponseEntity<Object> create(@Valid @RequestBody PersonDTO personDTO) {
         var pes = new Person(); // pessoa para persistir no BD
-
         BeanUtils.copyProperties(personDTO, pes);
 
         try {
@@ -72,8 +86,10 @@ public class PersonController {
             return ResponseEntity.badRequest().body("Formato de UUID inválido");
         }
 
+        // Buscando a pessoa no banco de dados
         var person = personRepository.findById(uuid);
 
+        // Verifica se ela existe
         if (person.isEmpty())
             return ResponseEntity.notFound().build();
 
@@ -112,5 +128,18 @@ public class PersonController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+ 
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+ 
+        return errors;
     }
 }

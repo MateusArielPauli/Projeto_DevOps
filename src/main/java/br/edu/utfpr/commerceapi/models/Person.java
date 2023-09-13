@@ -41,9 +41,9 @@ public class Person extends BaseEntity{
     @Column(name = "cpf")
     private String cpf;
 
-    @Column(name = "type")//cliente ou agencia de viagens deixar padrao cliente
+    @Column(name = "tipo")//cliente ou agencia de viagens deixar padrao cliente
     private Boolean cliente;
 
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "person")
     private List<Reserva> reservas;
 }

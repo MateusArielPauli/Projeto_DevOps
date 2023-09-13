@@ -4,9 +4,8 @@
 
 GET {{URL_BASE}}/pessoa
 
-
 ### Obter pessoa pelo ID
-GET {{URL_BASE}}/pessoa/1
+GET {{URL_BASE}}/pessoa/10
 
 ### Obter todas pessoas por pagina
 GET {{URL_BASE}}/pessoa?size=1&page=1&sort=email&direction=DESC
@@ -16,8 +15,11 @@ POST {{URL_BASE}}/pessoa
 Content-Type: application/json
 
 {
-    "name": "Joao",
+    "nome": "Joao",
+    "telefone": "", 
     "email": "joao2@gmail.com",
-    "nascimento": "1997-12-27"
-    
+    "senha": "123",
+    "nascimento": "1997-12-27",
+    "cpf": "",
+    "tipo": "0"
 }
