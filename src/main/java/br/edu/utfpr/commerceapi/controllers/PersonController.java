@@ -50,16 +50,30 @@ public class PersonController {
      * Obter todas as pessoas do banco.
      */
     @GetMapping(value = {"", "/"})
-    public List<Person> getAll() {
-        return personRepository.findAll();
+    public ResponseEntity<List<Person>> getAll() {
+        try {
+            List<Person> pessoas = personRepository.findAll();
+      
+            return new ResponseEntity<>(pessoas, HttpStatus.OK);
+          } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+          }
     }
 
     /* Obter pessoa pelo ID */
     @GetMapping("/{id}")
     public ResponseEntity<Object> getById(@PathVariable String id) {
-        Optional<Person> personOpt = personRepository.findById(UUID.fromString(id));
-
-        return personOpt.isPresent() ? ResponseEntity.ok(personOpt.get()) : ResponseEntity.notFound().build();
+        try {
+            Optional<Person> person = personRepository.findById(UUID.fromString(id));
+      
+            if (person.isPresent()) {
+              return ResponseEntity.ok().body(person.get());
+            } else {
+              return ResponseEntity.notFound().build();
+            }
+          } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+          }
     }
 
     /* Atualizar 1 pessoa pelo ID */

@@ -31,7 +31,7 @@ public class PersonDTO{
     @Email(message = "Formato de e-mail inválido")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "Favor digitar uma senha")
     private String senha;
 
 

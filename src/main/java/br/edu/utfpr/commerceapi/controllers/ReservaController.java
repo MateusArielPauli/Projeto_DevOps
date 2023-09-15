@@ -1,14 +1,20 @@
 package br.edu.utfpr.commerceapi.controllers;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import br.edu.utfpr.commerceapi.dto.ReservaDTO;
 import br.edu.utfpr.commerceapi.models.Reserva;
 import br.edu.utfpr.commerceapi.repositories.ReservaRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,10 +44,17 @@ public class ReservaController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Reserva> createReserva(@RequestBody Reserva reserva) {
-        Reserva reservaSalva = reservaRepository.save(reserva);
+    public ResponseEntity<Reserva> createReserva(@RequestBody ReservaDTO reservaDTO) {
+        try {
+            var reserva = new Reserva();
+            BeanUtils.copyProperties(reservaDTO, reserva);
 
-        return new ResponseEntity<>(reservaSalva, HttpStatus.CREATED);
+            Reserva savedReserva = reservaRepository.save(reserva);
+
+            return new ResponseEntity<>(savedReserva, HttpStatus.CREATED);
+            } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
     }
 
     @PutMapping("/{id}")
@@ -69,5 +82,17 @@ public class ReservaController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+
+        ex.getBindingResult().getAllErrors().forEach(error -> {String fieldName = ((FieldError) error).getField();
+                                                                String errorMessage = error.getDefaultMessage();
+                                                                errors.put(fieldName, errorMessage);});
+
+        return errors;
     }
 }

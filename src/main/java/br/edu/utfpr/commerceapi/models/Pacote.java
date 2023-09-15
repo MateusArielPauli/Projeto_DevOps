@@ -1,33 +1,71 @@
 package br.edu.utfpr.commerceapi.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Entity
+@Table(name = "tb_passeio")
+public class Pacote extends BaseEntity {
 
-public class Pacote extends BaseEntity{
-    
-    @Column(name = "destino", length = 150)
-    public String destino;
+  @Column(name = "nome", length = 150, nullable = false)
+  private String nome;
 
-    @Column(name = "itinerario", length = 150)
-    public String itinerario;
+  @Column(name = "descricao", length = 300)
+  private String descricao;
 
-    @Column(name = "preco")
-    public double preco;
+  @Column(name = "imagem")
+  private String imagem;
 
-    @Column(name = "qtdDias")
-    public double qtdDias;
+  @Column(name = "ativo", nullable = false)
+  private boolean ativo;
 
-    @Column(name = "refeicao", length = 150)
-    public String refeicao;
+  @Column(name = "valor", nullable = false)
+  private double valor;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pacote")
-    private List<Reserva> reservas = new ArrayList<>();
+  @Column(name = "origem", length = 150, nullable = false)
+  private String origem;
 
+  @Column(name = "destino", length = 150, nullable = false)
+  private String destino;
+
+  @Column(name = "itinerario", length = 300)
+  private String itinerario;
+
+  @Column(name = "data_hora_saida", nullable = false)
+  private String dataHoraSaida;
+
+  @Column(name = "data_hora_retorno", nullable = false)
+  private String dataHoraRetorno;
+
+  @Column(name = "quantidade_maxima_pessoas", nullable = false)
+  private int quantidadeMaximaPessoas;
+
+  @Column(name = "observacao")
+  private String observacao;
+
+  // Relacionamento One-to-Many com Reserva: Um passeio pode ter muitas reservas.
+  @OneToMany
+  @JoinColumn(name = "passeio_id")
+  private List<Reserva> reservas = new ArrayList<>();
+
+  // Relacionamento One-to-Many com Avaliacao: Um passeio pode ter muitas
+  // avaliações.
+  @OneToMany
+  @JoinColumn(name = "avaliacao_id")
+  private List<Avaliacao> avaliacoes = new ArrayList<>();
 }
