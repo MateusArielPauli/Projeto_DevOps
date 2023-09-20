@@ -1,0 +1,9 @@
+@URL_BASE=http://localhost:8080
+
+POST {{URL_BASE}}/pessoa
+Content-Type: application/json
+
+{
+    "username": "Joao",
+    "password": ""
+}

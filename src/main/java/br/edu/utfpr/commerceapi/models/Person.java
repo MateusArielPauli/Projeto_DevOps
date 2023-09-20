@@ -1,17 +1,22 @@
 package br.edu.utfpr.commerceapi.models;
 
-import java.time.LocalDate;
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Getter
 @Setter
@@ -19,31 +24,75 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "tb_person")
+@Table(name = "tb_pessoa")
+public class Person extends BaseEntity implements UserDetails {
 
-public class Person extends BaseEntity{
-    
-    @Column(name = "nome", length = 150, nullable = false)
-    private String nome;
+  // @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "nome", length = 150, nullable = false)
+  private String nome;
 
-    @Column(name = "telefone", length = 150, nullable = false)
-    private String telefone;
+  @Column(name = "email", length = 150, nullable = false, unique = true)
+  private String email;
 
-    @Column(name = "email", length = 100, nullable = false, unique = true)
-    private String email;
+  @Column(name = "password", length = 150, nullable = false)
+  private String password;
 
-    @Column(name = "senha", length = 150, nullable = false)
-    private String senha;
+  @Column(name = "cpf")
+  private String cpf;
 
-    @Column(name = "nascimento")
-    private LocalDate nascimento;
+  @Column(name = "cnpj")
+  private String cnpj;
 
-    @Column(name = "cpf")
-    private String cpf;
+  @Column(name = "dataNascimento")
+  private LocalDateTime dataNascimento;
 
-    @Column(name = "tipo")//cliente ou agencia de viagens deixar padrao cliente
-    private Boolean cliente;
+  @Column(name = "telefone")
+  private String telefone;
 
-    @OneToMany(mappedBy = "person")
-    private List<Reserva> reservas;
+  @Column(name = "cliente", columnDefinition = "boolean default true")
+  private Boolean cliente; //pessoa fisica ou juridica
+
+  @ManyToMany(mappedBy = "pessoas")
+  private List<Reserva> reservas;
+
+  @OneToMany(mappedBy = "pessoa")
+  private List<Avaliacao> avaliacoes;
+
+  @Override
+  @JsonIgnore
+  public String getUsername() {
+    return this.email;
+  }
+
+  @Override
+  @JsonIgnore
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  @Override
+  @JsonIgnore
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  @Override
+  @JsonIgnore
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  @JsonIgnore
+  public boolean isEnabled() {
+    return true;
+  }
+
+  @Override
+  @JsonIgnore
+  public List<GrantedAuthority> getAuthorities() {
+    List<GrantedAuthority> authorities = new ArrayList<>();
+    authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+    return authorities;
+  }
 }
