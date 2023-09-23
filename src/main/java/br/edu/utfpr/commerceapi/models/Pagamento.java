@@ -21,7 +21,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "tb_pagamento")
 
-public class Pagamento extends BaseEntity{
+public class Pagamento extends BasicEntity{
     @Column(name = "valor", nullable = false)
     private double valor;
 

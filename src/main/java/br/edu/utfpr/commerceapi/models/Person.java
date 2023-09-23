@@ -10,8 +10,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -28,7 +30,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "tb_person")
-public class Person extends BaseEntity implements UserDetails {
+public class Person extends BasicEntity implements UserDetails {
 
     // @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "nome", length = 150, nullable = false)
@@ -60,6 +62,13 @@ public class Person extends BaseEntity implements UserDetails {
 
     @OneToMany(mappedBy = "cliente")
     private List<Avaliacao> avaliacoes;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private List<Role> roles = new ArrayList<>();
+
+    public void addRole(Role role) {
+        roles.add(role);
+    }
 
     @Override
     @JsonIgnore

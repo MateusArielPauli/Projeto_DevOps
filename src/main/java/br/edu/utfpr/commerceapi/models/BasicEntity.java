@@ -15,7 +15,7 @@ import lombok.ToString;
 @ToString
 @MappedSuperclass
 
-public class BaseEntity {
+public class BasicEntity {
     @Id
     private UUID id;
     
@@ -25,7 +25,7 @@ public class BaseEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public BaseEntity() {
+    public BasicEntity() {
         this.id = UUID.randomUUID();
         this.updatedAt = createdAt = LocalDateTime.now();
     }

@@ -20,7 +20,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "tb_passeio")
-public class Pacote extends BaseEntity {
+public class Pacote extends BasicEntity {
 
   @Column(name = "nome", length = 150, nullable = false)
   private String nome;

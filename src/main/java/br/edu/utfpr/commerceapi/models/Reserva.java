@@ -22,7 +22,7 @@ import lombok.ToString;
 @ToString
 @Table(name = "tb_reserva")
 
-public class Reserva extends BaseEntity{
+public class Reserva extends BasicEntity{
     //cliente que fez reserva
     @ManyToOne
     @JoinColumn(name = "pessoa_id")
