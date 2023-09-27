@@ -3,13 +3,11 @@ package br.edu.utfpr.commerceapi.controllers;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import br.edu.utfpr.commerceapi.dto.AuthDTO;
 import br.edu.utfpr.commerceapi.security.JwtUtil;
 import jakarta.validation.Valid;
