@@ -7,11 +7,11 @@ COPY . .
 
 RUN chmod +x gradlew
 
-ENV SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3306/db_agencia
+ENV SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/db_comerceApi
 
-ENV SPRING_DATASOURCE_USERNAME=root
+ENV SPRING_DATASOURCE_USERNAME=postgres
 
-ENV SPRING_DATASOURCE_PASSWORD=root
+ENV SPRING_DATASOURCE_PASSWORD=1699598
 
 RUN ./gradlew build -x test
 
