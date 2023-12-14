@@ -7,7 +7,7 @@ COPY . .
 
 RUN chmod +x gradlew
 
-ENV SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/db_comerceApi
+ENV SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/db_comerceApi
 
 ENV SPRING_DATASOURCE_USERNAME=postgres
 
